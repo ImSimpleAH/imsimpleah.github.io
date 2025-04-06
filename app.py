@@ -4,45 +4,42 @@ import json
 import os
 
 app = Flask(__name__)
-CORS(app)  # 🔓 Allow cross-origin access (GitHub Pages needs this)
+CORS(app)
 
-# File to store events
 events_file = 'events.json'
 
-# Make sure the events file exists
+# Ensure the events file exists
 if not os.path.exists(events_file):
     with open(events_file, 'w') as f:
         json.dump([], f)
 
-@app.route('/')
-def home():
-    return '28th CAD Events API is running!'
+@app.route('/events', methods=['GET', 'POST', 'OPTIONS'])
+def events():
+    if request.method == 'OPTIONS':
+        return '', 200
+    elif request.method == 'POST':
+        try:
+            data = request.json
+            with open(events_file, 'r+') as f:
+                try:
+                    events = json.load(f)
+                except json.JSONDecodeError:
+                    events = []
+                events.append(data)
+                f.seek(0)
+                json.dump(events, f, indent=2)
+            return jsonify({"message": "Event added"}), 201
+        except Exception as e:
+            print("Error saving event:", e)
+            return jsonify({"error": "Failed to save event."}), 500
+    else:  # GET request
+        try:
+            with open(events_file, 'r') as f:
+                events = json.load(f)
+        except Exception:
+            events = []
+        return jsonify(events)
 
-
-# GET /events → Return all saved events
-@app.route('/events', methods=['GET'])
-def get_events():
-    try:
-        with open(events_file, 'r') as f:
-            events = json.load(f)
-    except Exception as e:
-        print("Error loading events.json:", e)
-        events = []
-    return jsonify(events)
-
-
-# POST /events → Add a new event
-@app.route('/events', methods=['POST'])
-def add_event():
-    data = request.json
-    with open(events_file, 'r+') as f:
-        events = json.load(f)
-        events.append(data)
-        f.seek(0)
-        json.dump(events, f, indent=2)
-    return jsonify({"message": "Event added"}), 201
-
-# ✅ IMPORTANT: Bind to 0.0.0.0 and use PORT from Render
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Render provides PORT env var
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
