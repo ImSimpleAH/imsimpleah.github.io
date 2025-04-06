@@ -1,4 +1,4 @@
-/* Reset & base styles */
+/* Base Styles */
 body, html {
   margin: 0;
   padding: 0;
@@ -12,31 +12,34 @@ a {
   color: #ffffff;
 }
 
-header.top-banner {
+/* Top Banner/Nav */
+.top-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #1a1a1a;
   padding: 1rem 2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
 .nav-left, .nav-right {
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
 .nav-button {
-  background-color: #3a3a3a;
+  background-color: #333;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 5px;
   font-weight: bold;
   transition: background-color 0.3s;
+  cursor: pointer;
 }
 
 .nav-button:hover {
-  background-color: #5e5e5e;
+  background-color: #4c4c4c;
 }
 
 .logo-container {
@@ -49,7 +52,38 @@ header.top-banner {
   height: 60px;
 }
 
-main {
+/* Dropdown Menu */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2a2a2a;
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  border-radius: 5px;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+}
+
+.dropdown-content a {
+  padding: 0.75rem 1rem;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #444;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Hero Section */
+.hero {
   text-align: center;
   margin-top: 5rem;
 }
@@ -61,12 +95,12 @@ main {
 
 .hero p {
   font-size: 1.2rem;
-  color: #aaaaaa;
+  color: #aaa;
 }
 
 footer {
   text-align: center;
   padding: 2rem 0;
-  color: #666;
   font-size: 0.9rem;
+  color: #666;
 }
