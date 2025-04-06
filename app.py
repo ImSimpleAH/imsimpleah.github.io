@@ -4,12 +4,10 @@ import json
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app)  # 🔥 This enables cross-origin requests
 
-# Simulated in-memory database (replace with SQLite/Postgres later)
 events_file = 'events.json'
 
-# Ensure file exists
 if not os.path.exists(events_file):
     with open(events_file, 'w') as f:
         json.dump([], f)
