@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Operations Calendar - 28th CAD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts + FullCalendar -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+
   <style>
     body {
       background-color: #0f0f0f;
       color: white;
     }
+
     #calendar {
       max-width: 900px;
       margin: 4rem auto;
@@ -19,14 +23,17 @@
       padding: 1rem;
       border-radius: 8px;
     }
+
     .fc-toolbar-title {
       font-size: 1.5rem;
     }
+
     .fc-button {
       background-color: #333;
       border: none;
       color: white;
     }
+
     .fc-button:hover {
       background-color: #555;
     }
@@ -34,24 +41,36 @@
 </head>
 <body>
 
+  <!-- Top Nav -->
   <header class="top-banner">
     <a href="index.html" class="nav-button">⬅ Home</a>
     <h2 style="margin: 0 auto;">Operations Calendar</h2>
   </header>
 
+  <!-- Calendar Container -->
   <div id="calendar"></div>
 
-  <!-- FullCalendar JS (use GLOBAL build for ease in HTML) -->
+  <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const storedEvents = JSON.parse(localStorage.getItem('events') || '[]');
+    const API_URL = 'http://localhost:5000/events'; // Replace with your hosted backend when ready
 
-      const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    document.addEventListener('DOMContentLoaded', async function () {
+      const calendarEl = document.getElementById('calendar');
+
+      // Load events from backend
+      const fetchEvents = async () => {
+        const res = await fetch(API_URL);
+        return await res.json();
+      };
+
+      const events = await fetchEvents();
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         selectable: true,
-        events: storedEvents,
-        select: function (info) {
+        events: events,
+        select: async function (info) {
           const title = prompt('Enter event title:');
           if (title) {
             const newEvent = {
@@ -60,9 +79,19 @@
               end: info.endStr,
               allDay: true
             };
-            calendar.addEvent(newEvent);
-            storedEvents.push(newEvent);
-            localStorage.setItem('events', JSON.stringify(storedEvents));
+
+            // Save to backend
+            const res = await fetch(API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(newEvent)
+            });
+
+            if (res.ok) {
+              calendar.addEvent(newEvent);
+            } else {
+              alert("Failed to save event.");
+            }
           }
           calendar.unselect();
         }
