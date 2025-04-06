@@ -30,7 +30,6 @@
     <p>&copy; 2025 28th CAD | All Rights Reserved</p>
   </footer>
 
-  <!-- Script logic -->
   <script>
     let editor;
     let editVisible = false;
@@ -100,7 +99,7 @@
       if (!editor) return;
 
       editor.save().then((outputData) => {
-        const content = `
+        const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,19 +115,20 @@
   <div id="editorjs" style="display: none;"></div>
   <button id="save-btn" style="display:none;">💾 Save Content</button>
   <footer><p>&copy; 2025 28th CAD | All Rights Reserved</p></footer>
-  <script src="index.html"></script>
+  <scr` + `ipt src="index.js"></scr` + `ipt>
 </body>
-</html>;
+</html>`;
 
         const GITHUB_TOKEN = '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
-'; // ⚠️ Replace for testing only
+'; // 🔐 Replace with your token (for dev only)
         const REPO_OWNER = 'imsimpleah';
         const REPO_NAME = 'imsimpleah.github.io';
         const FILE_PATH = 'index.html';
         const BRANCH = 'main';
-        const message = 'Update via in-browser Editor.js';
-        const encodedContent = btoa(unescape(encodeURIComponent(content)));
+        const message = 'Update via Editor.js';
+        const encodedContent = btoa(unescape(encodeURIComponent(htmlContent)));
 
+        // Get SHA of the current file first
         fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
           headers: {
             Authorization: `token ${GITHUB_TOKEN}`
@@ -151,13 +151,13 @@
           })
           .then(res => res.json())
           .then(data => {
-            console.log("GitHub updated:", data);
+            console.log("✅ GitHub updated:", data);
             alert("✅ Changes pushed to GitHub!");
             toggleEditMode();
           });
         });
       }).catch((error) => {
-        console.error("Saving failed: ", error);
+        console.error("❌ Saving failed:", error);
       });
     }
   </script>
