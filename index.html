@@ -16,11 +16,84 @@
 </head>
 <body>
 
-  <button id="edit-toggle" onclick="toggleEditMode()">✏️ Enter Edit Mode</button>
+  <!-- Edit Mode Toggle Button -->
+  <button id="edit-toggle">✏️ Enter Edit Mode</button>
 
-  <div class="content-container">
+  <!-- Default View Content -->
+  <div class="content-container" id="view-mode">
     <h1>Welcome to the 28th Combined Arms Division</h1>
     <p>This website is editable in real-time using a block-style editor. Click the Edit Mode button to start editing.</p>
   </div>
 
-  <div id="editor
+  <!-- Hidden Editor Container -->
+  <div id="editorjs" style="display: none;"></div>
+  <button id="save-btn" style="display:none;">💾 Save Content</button>
+
+  <footer>
+    <p>&copy; 2025 28th CAD | All Rights Reserved</p>
+  </footer>
+
+  <!-- Scripts (loaded last!) -->
+  <script>
+    let editor;
+    let editVisible = false;
+
+    document.getElementById('edit-toggle').addEventListener('click', toggleEditMode);
+    document.getElementById('save-btn').addEventListener('click', saveData);
+
+    function toggleEditMode() {
+      const editorContainer = document.getElementById('editorjs');
+      const saveButton = document.getElementById('save-btn');
+      const viewMode = document.getElementById('view-mode');
+      const editButton = document.getElementById('edit-toggle');
+
+      if (!editVisible) {
+        editorContainer.style.display = 'block';
+        saveButton.style.display = 'inline-block';
+        viewMode.style.display = 'none';
+        editButton.innerText = '🚫 Exit Edit Mode';
+
+        if (!editor) {
+          editor = new EditorJS({
+            holder: 'editorjs',
+            tools: {
+              header: {
+                class: Header,
+                inlineToolbar: true,
+                config: {
+                  placeholder: 'Enter a header'
+                }
+              },
+              paragraph: {
+                class: Paragraph,
+                inlineToolbar: true
+              }
+            },
+            placeholder: 'Start writing your content here...',
+            autofocus: true
+          });
+        }
+
+        editVisible = true;
+      } else {
+        editorContainer.style.display = 'none';
+        saveButton.style.display = 'none';
+        viewMode.style.display = 'block';
+        editButton.innerText = '✏️ Enter Edit Mode';
+        editVisible = false;
+      }
+    }
+
+    function saveData() {
+      if (!editor) return;
+      editor.save().then((outputData) => {
+        console.log("Saved Output:", outputData);
+        alert("Saved! (Check console for now)");
+      }).catch((error) => {
+        console.error("Saving failed: ", error);
+      });
+    }
+  </script>
+
+</body>
+</html>
