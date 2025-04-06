@@ -1,59 +1,72 @@
-/* Base styling */
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #121212;
-  color: #ffffff;
-  padding: 2rem;
+/* Reset & base styles */
+body, html {
   margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0f0f0f;
+  color: #ffffff;
 }
 
-h1, h2 {
-  font-weight: 700;
+a {
+  text-decoration: none;
+  color: #ffffff;
 }
 
-p {
-  font-size: 1.1rem;
-  line-height: 1.6;
+header.top-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1a1a1a;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
 }
 
-.content-container {
-  max-width: 700px;
-  margin: 0 auto;
+.nav-left, .nav-right {
+  display: flex;
+  gap: 1rem;
 }
 
-#editorjs {
-  background: #1e1e1e;
-  padding: 1.5rem;
-  border-radius: 8px;
-  max-width: 700px;
-  margin: 2rem auto;
-  min-height: 200px;
-}
-
-/* Buttons */
-#edit-toggle, #save-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #61dafb;
-  color: #000;
-  padding: 10px 15px;
+.nav-button {
+  background-color: #3a3a3a;
   border: none;
+  padding: 0.6rem 1.2rem;
   border-radius: 5px;
   font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 999;
+  transition: background-color 0.3s;
 }
 
-#save-btn {
-  top: 70px;
+.nav-button:hover {
+  background-color: #5e5e5e;
 }
 
-/* Footer */
-footer {
+.logo-container {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.unit-logo {
+  height: 60px;
+}
+
+main {
   text-align: center;
   margin-top: 5rem;
-  color: #888;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  color: #aaaaaa;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: #666;
   font-size: 0.9rem;
 }
