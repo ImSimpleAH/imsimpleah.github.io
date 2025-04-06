@@ -114,19 +114,29 @@
     const API = 'https://calendar-backend-y9x1.onrender.com';
 
     async function checkLogin() {
-      const res = await fetch(`${API}/me`, { credentials: 'include' });
-      const data = await res.json();
+      try {
+        const res = await fetch(`${API}/me`, {
+          credentials: 'include'
+        });
+        const data = await res.json();
 
-      if (data.logged_in) {
-        document.getElementById('loginBtn').classList.add('hidden');
-        document.getElementById('logoutBtn').classList.remove('hidden');
-        document.getElementById('welcomeMsg').classList.remove('hidden');
-        document.getElementById('welcomeMsg').textContent = `👋 Welcome, ${data.username}`;
-      } else {
-        document.getElementById('loginBtn').classList.remove('hidden');
-        document.getElementById('logoutBtn').classList.add('hidden');
-        document.getElementById('welcomeMsg').classList.add('hidden');
+        if (data.logged_in) {
+          document.getElementById('loginBtn').classList.add('hidden');
+          document.getElementById('logoutBtn').classList.remove('hidden');
+          document.getElementById('welcomeMsg').classList.remove('hidden');
+          document.getElementById('welcomeMsg').textContent = `👋 Welcome, ${data.username}`;
+        } else {
+          resetLoginState();
+        }
+      } catch {
+        resetLoginState();
       }
+    }
+
+    function resetLoginState() {
+      document.getElementById('loginBtn').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.add('hidden');
+      document.getElementById('welcomeMsg').classList.add('hidden');
     }
 
     function toggleLogin() {
