@@ -85,14 +85,20 @@
     }
 
     function saveData() {
-      if (!editor) return;
-      editor.save().then((outputData) => {
-        console.log("Saved Output:", outputData);
-        alert("Saved! (Check console for now)");
-      }).catch((error) => {
-        console.error("Saving failed: ", error);
-      });
-    }
+  if (!editor) return;
+
+  editor.save().then((outputData) => {
+    console.log("Saved Output:", outputData);
+    alert("Saved! (Check console for now)");
+
+    // Exit edit mode after save
+    toggleEditMode();
+
+  }).catch((error) => {
+    console.error("Saving failed: ", error);
+  });
+}
+
   </script>
 
 </body>
