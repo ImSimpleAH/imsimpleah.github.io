@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Operations Calendar - 28th CAD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 4rem auto;
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 8px;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top-banner">
+    <a href="index.html" class="nav-button">⬅ Home</a>
+    <h2 style="margin: 0 auto;">Operations Calendar</h2>
+  </header>
+
+  <div id="calendar"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const storedEvents = JSON.parse(localStorage.getItem('events') || '[]');
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        events: storedEvents,
+        select: function (info) {
+          const title = prompt('Enter event title:');
+          if (title) {
+            const newEvent = {
+              title: title,
+              start: info.startStr,
+              end: info.endStr
+            };
+            calendar.addEvent(newEvent);
+            storedEvents.push(newEvent);
+            localStorage.setItem('events', JSON.stringify(storedEvents));
+          }
+          calendar.unselect();
+        }
+      });
+
+      calendar.render();
+    });
+  </script>
+
+</body>
+</html>
