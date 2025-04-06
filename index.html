@@ -82,7 +82,7 @@
     <nav>
       <a href="operations.html" class="btn">Operations</a>
       <a href="roster.html" class="btn">Roster</a>
-      <div class="btn" id="loginBtn" onclick="showLogin()">Login</div>
+      <div class="btn" id="loginBtn" onclick="toggleLogin()">Login</div>
       <div class="btn hidden" id="logoutBtn" onclick="logout()">Logout</div>
     </nav>
   </header>
@@ -93,9 +93,18 @@
 
     <div class="login-box hidden" id="loginBox">
       <h3>Login</h3>
-      <input type="text" id="username" placeholder="Username" />
-      <input type="password" id="password" placeholder="Password" />
+      <input type="text" id="loginUsername" placeholder="Username" />
+      <input type="password" id="loginPassword" placeholder="Password" />
       <button class="btn" onclick="login()">Login</button>
+      <p style="margin-top: 1rem;">New here? <a href="#" onclick="toggleRegister()">Register</a></p>
+    </div>
+
+    <div class="login-box hidden" id="registerBox">
+      <h3>Register</h3>
+      <input type="text" id="registerUsername" placeholder="Username" />
+      <input type="password" id="registerPassword" placeholder="Password" />
+      <button class="btn" onclick="register()">Register</button>
+      <p style="margin-top: 1rem;">Already have an account? <a href="#" onclick="toggleRegister()">Login</a></p>
     </div>
 
     <div id="welcomeMsg" class="hidden"></div>
@@ -120,13 +129,19 @@
       }
     }
 
-    function showLogin() {
+    function toggleLogin() {
+      document.getElementById('loginBox').classList.toggle('hidden');
+      document.getElementById('registerBox').classList.add('hidden');
+    }
+
+    function toggleRegister() {
+      document.getElementById('registerBox').classList.toggle('hidden');
       document.getElementById('loginBox').classList.toggle('hidden');
     }
 
     async function login() {
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
 
       const res = await fetch(`${API}/login`, {
         method: 'POST',
@@ -142,6 +157,27 @@
         await checkLogin();
       } else {
         alert(data.error || 'Login failed.');
+      }
+    }
+
+    async function register() {
+      const username = document.getElementById('registerUsername').value;
+      const password = document.getElementById('registerPassword').value;
+
+      const res = await fetch(`${API}/register`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Registration successful! You may now log in.");
+        toggleRegister();
+      } else {
+        alert(data.error || 'Registration failed.');
       }
     }
 
