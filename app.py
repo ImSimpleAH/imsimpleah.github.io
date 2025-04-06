@@ -14,6 +14,11 @@ if not os.path.exists(events_file):
     with open(events_file, 'w') as f:
         json.dump([], f)
 
+@app.route('/')
+def home():
+    return '28th CAD Events API is running!'
+
+
 # GET /events → Return all saved events
 @app.route('/events', methods=['GET'])
 def get_events():
