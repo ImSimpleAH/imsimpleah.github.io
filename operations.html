@@ -5,7 +5,7 @@
   <title>Operations Calendar - 28th CAD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Fonts + FullCalendar -->
+  <!-- Fonts + Calendar Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
@@ -37,14 +37,44 @@
     .fc-button:hover {
       background-color: #555;
     }
+
+    header.top-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #1a1a1a;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    header.top-banner h2 {
+      margin: 0 auto;
+      font-size: 1.4rem;
+    }
+
+    .nav-button {
+      background-color: #333;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .nav-button:hover {
+      background-color: #555;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Nav -->
+  <!-- Top Banner -->
   <header class="top-banner">
     <a href="index.html" class="nav-button">⬅ Home</a>
-    <h2 style="margin: 0 auto;">Operations Calendar</h2>
+    <h2>Operations Calendar</h2>
+    <div></div> <!-- Spacer -->
   </header>
 
   <!-- Calendar Container -->
@@ -53,16 +83,22 @@
   <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
   <script>
-    const API_URL = 'http://localhost:5000/events'; // Replace with your hosted backend when ready
+    const API_URL = 'http://localhost:5000/events'; // Change to your hosted backend when deployed
 
     document.addEventListener('DOMContentLoaded', async function () {
       const calendarEl = document.getElementById('calendar');
 
-      // Load events from backend
-      const fetchEvents = async () => {
-        const res = await fetch(API_URL);
-        return await res.json();
-      };
+      async function fetchEvents() {
+        try {
+          const res = await fetch(API_URL);
+          if (!res.ok) throw new Error("Failed to load events.");
+          return await res.json();
+        } catch (error) {
+          console.error("Error fetching events:", error);
+          alert("Unable to load events. Please try again later.");
+          return [];
+        }
+      }
 
       const events = await fetchEvents();
 
@@ -72,27 +108,32 @@
         events: events,
         select: async function (info) {
           const title = prompt('Enter event title:');
-          if (title) {
-            const newEvent = {
-              title: title,
-              start: info.startStr,
-              end: info.endStr,
-              allDay: true
-            };
+          if (!title) {
+            calendar.unselect();
+            return;
+          }
 
-            // Save to backend
+          const newEvent = {
+            title: title,
+            start: info.startStr,
+            end: info.endStr,
+            allDay: true
+          };
+
+          try {
             const res = await fetch(API_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(newEvent)
             });
 
-            if (res.ok) {
-              calendar.addEvent(newEvent);
-            } else {
-              alert("Failed to save event.");
-            }
+            if (!res.ok) throw new Error("Failed to save event.");
+            calendar.addEvent(newEvent);
+          } catch (error) {
+            console.error("Error saving event:", error);
+            alert("Could not save the event. Please try again.");
           }
+
           calendar.unselect();
         }
       });
