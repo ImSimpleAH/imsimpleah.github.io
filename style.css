@@ -1,83 +1,59 @@
-/* Reset + base styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
-  height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #fff;
-}
-
-#background-video {
-  position: fixed;
-  top: 0;
-  left: 0;
-  min-width: 100%;
-  min-height: 100%;
-  z-index: -1;
-  object-fit: cover;
-}
-
-.overlay {
-  background-color: rgba(0, 0, 0, 0.6);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+/* Base styling */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #121212;
+  color: #ffffff;
   padding: 2rem;
+  margin: 0;
 }
 
-header {
-  text-align: center;
+h1, h2 {
+  font-weight: 700;
 }
 
-header h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+p {
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
-nav a {
-  color: #61dafb;
-  margin: 0 1rem;
-  text-decoration: none;
-  font-weight: bold;
+.content-container {
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-main {
-  text-align: center;
-  margin-top: 5%;
+#editorjs {
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 700px;
+  margin: 2rem auto;
+  min-height: 200px;
 }
 
-main h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-main p {
-  font-size: 1.2rem;
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-}
-
-.btn {
+/* Buttons */
+#edit-toggle, #save-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
   background-color: #61dafb;
   color: #000;
-  padding: 0.75rem 1.5rem;
+  padding: 10px 15px;
+  border: none;
   border-radius: 5px;
-  text-decoration: none;
   font-weight: bold;
-  transition: 0.3s;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 999;
 }
 
-.btn:hover {
-  background-color: #4ea7c1;
+#save-btn {
+  top: 70px;
 }
 
+/* Footer */
 footer {
   text-align: center;
-  padding-top: 1rem;
+  margin-top: 5rem;
+  color: #888;
   font-size: 0.9rem;
 }
