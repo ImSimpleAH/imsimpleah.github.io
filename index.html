@@ -6,6 +6,11 @@
   <title>Live Block Editor</title>
   <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 </head>
+
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+
 <body style="background:#111; color:#fff; font-family:sans-serif; padding:2rem">
 
   <h1>🧱 28th CAD Block Editor (Client-Side Only)</h1>
@@ -15,29 +20,35 @@
 
   <button onclick="saveData()" style="margin-top:1rem;">💾 Save Content (Console Output)</button>
 
-  <script>
-    const editor = new EditorJS({
-      holder: 'editorjs',
-      tools: {
-        header: {
-          class: window.Header,
-          inlineToolbar: true
-        },
-        paragraph: {
-          class: window.Paragraph,
-          inlineToolbar: true
+<script>
+  const editor = new EditorJS({
+    holder: 'editorjs',
+    tools: {
+      header: {
+        class: Header,
+        inlineToolbar: true,
+        config: {
+          placeholder: 'Enter a header'
         }
+      },
+      paragraph: {
+        class: Paragraph,
+        inlineToolbar: true
       }
-    });
+    },
+    placeholder: 'Start writing your content here...',
+    autofocus: true
+  });
 
-    function saveData() {
-      editor.save().then((outputData) => {
-        console.log("Saved Output:", outputData);
-        alert("Check the browser console for exported data!");
-      }).catch((error) => {
-        console.log("Saving failed: ", error);
-      });
-    }
-  </script>
+  function saveData() {
+    editor.save().then((outputData) => {
+      console.log("Saved Output:", outputData);
+      alert("Check the browser console for the exported content!");
+    }).catch((error) => {
+      console.error("Saving failed: ", error);
+    });
+  }
+</script>
+
 </body>
 </html>
