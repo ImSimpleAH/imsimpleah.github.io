@@ -1,10 +1,10 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
-import os
 
 app = Flask(__name__)
-CORS(app)  # 🔥 This enables cross-origin requests
+CORS(app)
 
 events_file = 'events.json'
 
@@ -28,5 +28,7 @@ def add_event():
         json.dump(events, f, indent=2)
     return jsonify({"message": "Event added"}), 201
 
+# ✅ Use 0.0.0.0 and port from environment
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
