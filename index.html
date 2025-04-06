@@ -1,165 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>28th CAD Editable Site</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Fonts & Styles -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>28th Combined Arms Division</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Editor.js Core + Tools -->
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <button id="edit-toggle">✏️ Enter Edit Mode</button>
+  <header class="top-banner">
+    <nav class="nav-left">
+      <a href="#operations" class="nav-button">Operations</a>
+    </nav>
 
-  <div class="content-container" id="view-mode">
-    <h1>Welcome to the 28th Combined Arms Division</h1>
-    <p>This website is editable in real-time using a block-style editor. Click the Edit Mode button to start editing.</p>
-  </div>
+    <div class="logo-container">
+      <img src="assets/28thLOGO.png" alt="28th CAD Logo" class="unit-logo">
+    </div>
 
-  <div id="editorjs" style="display: none;"></div>
-  <button id="save-btn" style="display:none;">💾 Save Content</button>
+    <nav class="nav-right">
+      <a href="#roster" class="nav-button">Roster</a>
+      <a href="#resources" class="nav-button">Resources</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Welcome to the 28th Combined Arms Division</h1>
+      <p>Official MILSIM unit website. Select a section above to navigate.</p>
+    </section>
+  </main>
 
   <footer>
     <p>&copy; 2025 28th CAD | All Rights Reserved</p>
   </footer>
-
-  <script>
-    let editor;
-    let editVisible = false;
-
-    document.getElementById('edit-toggle').addEventListener('click', toggleEditMode);
-    document.getElementById('save-btn').addEventListener('click', saveData);
-
-    function toggleEditMode() {
-      const editorContainer = document.getElementById('editorjs');
-      const saveButton = document.getElementById('save-btn');
-      const viewMode = document.getElementById('view-mode');
-      const editButton = document.getElementById('edit-toggle');
-
-      if (!editVisible) {
-        editorContainer.style.display = 'block';
-        saveButton.style.display = 'inline-block';
-        viewMode.style.display = 'none';
-        editButton.innerText = '🚫 Exit Edit Mode';
-
-        if (!editor) {
-          editor = new EditorJS({
-            holder: 'editorjs',
-            tools: {
-              header: {
-                class: Header,
-                inlineToolbar: true,
-                config: {
-                  placeholder: 'Enter a header'
-                }
-              },
-              paragraph: {
-                class: Paragraph,
-                inlineToolbar: true
-              }
-            },
-            placeholder: 'Start writing your content here...',
-            autofocus: true
-          });
-        }
-
-        editVisible = true;
-      } else {
-        editorContainer.style.display = 'none';
-        saveButton.style.display = 'none';
-        viewMode.style.display = 'block';
-        editButton.innerText = '✏️ Enter Edit Mode';
-        editVisible = false;
-      }
-    }
-
-    function convertToHTML(outputData) {
-      let html = '';
-      outputData.blocks.forEach(block => {
-        switch (block.type) {
-          case 'header':
-            html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
-            break;
-          case 'paragraph':
-            html += `<p>${block.data.text}</p>`;
-            break;
-        }
-      });
-      return html;
-    }
-
-    function saveData() {
-      if (!editor) return;
-
-      editor.save().then((outputData) => {
-        const htmlContent = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>28th CAD Website</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <button id="edit-toggle">✏️ Enter Edit Mode</button>
-  <div class="content-container" id="view-mode">
-    ${convertToHTML(outputData)}
-  </div>
-  <div id="editorjs" style="display: none;"></div>
-  <button id="save-btn" style="display:none;">💾 Save Content</button>
-  <footer><p>&copy; 2025 28th CAD | All Rights Reserved</p></footer>
-</body>
-</html>`;
-
-        const GITHUB_TOKEN = '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
-'; // 🔐 Replace with your token (for dev only)
-        const REPO_OWNER = 'imsimpleah';
-        const REPO_NAME = 'imsimpleah.github.io';
-        const FILE_PATH = 'index.html';
-        const BRANCH = 'main';
-        const message = 'Update via Editor.js';
-        const encodedContent = btoa(unescape(encodeURIComponent(htmlContent)));
-
-        // Get SHA of the current file first
-        fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-          headers: {
-            Authorization: `token ${GITHUB_TOKEN}`
-          }
-        })
-        .then(res => res.json())
-        .then(fileData => {
-          fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `token ${GITHUB_TOKEN}`
-            },
-            body: JSON.stringify({
-              message: message,
-              content: encodedContent,
-              sha: fileData.sha,
-              branch: BRANCH
-            })
-          })
-          .then(res => res.json())
-          .then(data => {
-            console.log("✅ GitHub updated:", data);
-            alert("✅ Changes pushed to GitHub!");
-            toggleEditMode();
-          });
-        });
-      }).catch((error) => {
-        console.error("❌ Saving failed:", error);
-      });
-    }
-  </script>
 
 </body>
 </html>
