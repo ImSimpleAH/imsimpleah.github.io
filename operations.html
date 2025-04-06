@@ -14,7 +14,7 @@
       margin: 0;
       padding: 0;
     }
-
+    
     header {
       background-color: #1a1a1a;
       padding: 1rem 2rem;
@@ -22,12 +22,12 @@
       justify-content: space-between;
       align-items: center;
     }
-
+    
     header h2 {
       margin: 0;
       font-size: 1.5rem;
     }
-
+    
     .btn {
       background-color: #333;
       border: none;
@@ -38,19 +38,43 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
-
+    
     .btn:hover {
       background-color: #555;
     }
-
+    
     #calendar {
-      max-width: 900px;
-      margin: 2rem auto;
+      max-width: 1000px;
+      margin: 3rem auto;
       padding: 1rem;
       background-color: #1c1c1c;
       border-radius: 8px;
     }
-
+    
+    .fc {
+      font-size: 1rem;
+    }
+    
+    .fc-event {
+      font-size: 0.85rem;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    
+    .fc-event:hover {
+      background-color: #2d2d2d;
+      cursor: pointer;
+    }
+    
+    .fc-daygrid-day-number {
+      font-size: 0.9rem;
+      padding-right: 6px;
+    }
+    
+    .fc-toolbar-title {
+      font-size: 1.8rem;
+    }
+    
     .form-popup {
       display: none;
       position: fixed;
@@ -64,7 +88,7 @@
       z-index: 9999;
       width: 300px;
     }
-
+    
     .form-popup input,
     .form-popup select {
       width: 100%;
@@ -75,10 +99,11 @@
       background: #333;
       color: white;
     }
-
+    
     .form-popup button {
       margin-right: 1rem;
     }
+
   </style>
 </head>
 <body>
