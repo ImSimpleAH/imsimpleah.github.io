@@ -57,24 +57,37 @@
     }
 
     .fc-event {
-      font-size: 0.95rem;
-      padding: 6px 8px;
-      line-height: 1.3;
-      white-space: normal !important;
-      word-break: break-word;
+      font-size: 1rem;
+      padding: 6px 10px;
       border-radius: 6px;
       background-color: #2a2a2a;
       color: white;
       border-left: 4px solid #0077ff;
+      line-height: 1.4;
+      display: flex;
+      flex-direction: column;
+      white-space: normal !important;
+      word-break: break-word;
+      box-sizing: border-box;
     }
 
-    .fc-event:hover {
-      background-color: #3a3a3a;
-      cursor: pointer;
+    .fc-event-time {
+      font-size: 0.85rem;
+      color: #aaa;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .fc-event-title {
+      font-weight: 600;
+    }
+
+    .fc-daygrid-event-dot {
+      display: none;
     }
 
     .fc-daygrid-day-frame {
-      padding: 10px 8px;
+      padding: 10px 6px;
     }
 
     .fc-daygrid-day-number {
