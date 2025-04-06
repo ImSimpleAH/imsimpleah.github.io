@@ -22,9 +22,14 @@ def home():
 # GET /events → Return all saved events
 @app.route('/events', methods=['GET'])
 def get_events():
-    with open(events_file, 'r') as f:
-        events = json.load(f)
+    try:
+        with open(events_file, 'r') as f:
+            events = json.load(f)
+    except Exception as e:
+        print("Error loading events.json:", e)
+        events = []
     return jsonify(events)
+
 
 # POST /events → Add a new event
 @app.route('/events', methods=['POST'])
