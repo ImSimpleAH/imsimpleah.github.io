@@ -1,35 +1,43 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>28th Combined Arms Division</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Live Block Editor</title>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
 </head>
-<body>
-  <video autoplay muted loop id="background-video">
-    <source src="assets/background.mp4" type="video/mp4" />
-  </video>
+<body style="background:#111; color:#fff; font-family:sans-serif; padding:2rem">
 
-  <div class="overlay">
-    <header>
-      <h1>28th Combined Arms Division</h1>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Join</a>
-        <a href="#">Discord</a>
-      </nav>
-    </header>
+  <h1>🧱 28th CAD Block Editor (Client-Side Only)</h1>
+  <p style="color:#aaa;">This is an editable prototype. Edits won't save unless exported manually.</p>
 
-    <main>
-      <h2>Realism. Brotherhood. Immersion.</h2>
-      <p>Welcome to the 28th CAD — a modern ArmA 3 MILSIM unit combining infantry, armor, aviation, and support elements into a cohesive force.</p>
-      <a href="#" class="btn">Join the Fight</a>
-    </main>
+  <div id="editorjs" style="background:#222; padding:1rem; border-radius:8px;"></div>
 
-    <footer>
-    </footer>
-  </div>
+  <button onclick="saveData()" style="margin-top:1rem;">💾 Save Content (Console Output)</button>
+
+  <script>
+    const editor = new EditorJS({
+      holder: 'editorjs',
+      tools: {
+        header: {
+          class: window.Header,
+          inlineToolbar: true
+        },
+        paragraph: {
+          class: window.Paragraph,
+          inlineToolbar: true
+        }
+      }
+    });
+
+    function saveData() {
+      editor.save().then((outputData) => {
+        console.log("Saved Output:", outputData);
+        alert("Check the browser console for exported data!");
+      }).catch((error) => {
+        console.log("Saving failed: ", error);
+      });
+    }
+  </script>
 </body>
 </html>
