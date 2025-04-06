@@ -16,16 +16,13 @@
 </head>
 <body>
 
-  <!-- Edit Mode Toggle Button -->
   <button id="edit-toggle">✏️ Enter Edit Mode</button>
 
-  <!-- Default View Content -->
   <div class="content-container" id="view-mode">
     <h1>Welcome to the 28th Combined Arms Division</h1>
     <p>This website is editable in real-time using a block-style editor. Click the Edit Mode button to start editing.</p>
   </div>
 
-  <!-- Hidden Editor Container -->
   <div id="editorjs" style="display: none;"></div>
   <button id="save-btn" style="display:none;">💾 Save Content</button>
 
@@ -33,7 +30,7 @@
     <p>&copy; 2025 28th CAD | All Rights Reserved</p>
   </footer>
 
-  <!-- Scripts (loaded last!) -->
+  <!-- Script logic -->
   <script>
     let editor;
     let editVisible = false;
@@ -84,21 +81,85 @@
       }
     }
 
+    function convertToHTML(outputData) {
+      let html = '';
+      outputData.blocks.forEach(block => {
+        switch (block.type) {
+          case 'header':
+            html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
+            break;
+          case 'paragraph':
+            html += `<p>${block.data.text}</p>`;
+            break;
+        }
+      });
+      return html;
+    }
+
     function saveData() {
-  if (!editor) return;
+      if (!editor) return;
 
-  editor.save().then((outputData) => {
-    console.log("Saved Output:", outputData);
-    alert("Saved! (Check console for now)");
+      editor.save().then((outputData) => {
+        const content = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>28th CAD Website</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <button id="edit-toggle">✏️ Enter Edit Mode</button>
+  <div class="content-container" id="view-mode">
+    ${convertToHTML(outputData)}
+  </div>
+  <div id="editorjs" style="display: none;"></div>
+  <button id="save-btn" style="display:none;">💾 Save Content</button>
+  <footer><p>&copy; 2025 28th CAD | All Rights Reserved</p></footer>
+  <script src="index.html"></script>
+</body>
+</html>`;
 
-    // Exit edit mode after save
-    toggleEditMode();
+        const GITHUB_TOKEN = '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
+'; // ⚠️ Replace for testing only
+        const REPO_OWNER = 'imsimpleah';
+        const REPO_NAME = 'imsimpleah.github.io';
+        const FILE_PATH = 'index.html';
+        const BRANCH = 'main';
+        const message = 'Update via in-browser Editor.js';
+        const encodedContent = btoa(unescape(encodeURIComponent(content)));
 
-  }).catch((error) => {
-    console.error("Saving failed: ", error);
-  });
-}
-
+        fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+          headers: {
+            Authorization: `token ${GITHUB_TOKEN}`
+          }
+        })
+        .then(res => res.json())
+        .then(fileData => {
+          fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `token ${GITHUB_TOKEN}`
+            },
+            body: JSON.stringify({
+              message: message,
+              content: encodedContent,
+              sha: fileData.sha,
+              branch: BRANCH
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            console.log("GitHub updated:", data);
+            alert("✅ Changes pushed to GitHub!");
+            toggleEditMode();
+          });
+        });
+      }).catch((error) => {
+        console.error("Saving failed: ", error);
+      });
+    }
   </script>
 
 </body>
