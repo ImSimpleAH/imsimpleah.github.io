@@ -1,57 +1,26 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Live Block Editor</title>
+  <title>28th CAD Editable Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Editor.js Core + Tools -->
   <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
 </head>
-
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
-
-<body style="background:#111; color:#fff; font-family:sans-serif; padding:2rem">
+<body>
 
   <button id="edit-toggle" onclick="toggleEditMode()">✏️ Enter Edit Mode</button>
 
+  <div class="content-container">
+    <h1>Welcome to the 28th Combined Arms Division</h1>
+    <p>This website is editable in real-time using a block-style editor. Click the Edit Mode button to start editing.</p>
+  </div>
 
-  <h1>🧱 28th CAD Block Editor (Client-Side Only)</h1>
-  <p style="color:#aaa;">This is an editable prototype. Edits won't save unless exported manually.</p>
-
-  <div id="editorjs" style="background:#222; padding:1rem; border-radius:8px;"></div>
-
-  <button onclick="saveData()" style="margin-top:1rem;">💾 Save Content (Console Output)</button>
-
-<script>
-  const editor = new EditorJS({
-    holder: 'editorjs',
-    tools: {
-      header: {
-        class: Header,
-        inlineToolbar: true,
-        config: {
-          placeholder: 'Enter a header'
-        }
-      },
-      paragraph: {
-        class: Paragraph,
-        inlineToolbar: true
-      }
-    },
-    placeholder: 'Start writing your content here...',
-    autofocus: true
-  });
-
-  function saveData() {
-    editor.save().then((outputData) => {
-      console.log("Saved Output:", outputData);
-      alert("Check the browser console for the exported content!");
-    }).catch((error) => {
-      console.error("Saving failed: ", error);
-    });
-  }
-</script>
-
-</body>
-</html>
+  <div id="editor
